@@ -13,6 +13,7 @@ class ImageCheck:
     result = []
     answer = None
 
+
     # tensorflow Warning 문구 제거
     # for Mac OS
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -131,15 +132,12 @@ class ImageCheck:
 #
 
 
-
-import imghdr
-import time
+import os, imghdr, time
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PIL import Image
 from PyQt5 import QtCore, QtGui,  QtWidgets
 
-import os
 
 
 ### MyWidget ###
@@ -322,6 +320,7 @@ class MyMainWindow(QMainWindow):
 
     ## getFileName ##
     def OpenFileDialog_btn_Clicked(self):
+        self.stamp_print("Open Button Clicked.")
         file_name = QFileDialog.getOpenFileName(self.wg, 'Open Image File', 'TestImage', "Image files (*.jpg *.png)")[0]
         if file_name == '':
 
@@ -352,7 +351,7 @@ class MyMainWindow(QMainWindow):
 
     ## startTest ##
     def startTest(self):
-        self.stamp_print(os.getcwd())
+        self.stamp_print("Start Test Button Clicked.")
         # 로딩된 파일이 없을 경우...
         if (self.wg.image_path is None):
             self.set_status("Need 'Image Loading'")
@@ -450,6 +449,7 @@ class MyMainWindow(QMainWindow):
 
     ## Save Log ##
     def save_log(self):
+        self.stamp_print("Save Log Button Clicked.")
         log = self.wg.log_textbox.toPlainText()
         if log is not "":
             self.save_file(log)
@@ -522,29 +522,25 @@ class MyMainWindow(QMainWindow):
 
     # Help Button Clicked #
     def help_btn_clicked(self):
-        readme = os.path.abspath('./Data/README.txt')
-        self.stamp_print('Help Button Cliked.')
+        self.stamp_print('Help Button Clicked.')
+        manual = os.path.abspath('./Data/user_manual.txt')
+        notepad = "c:\windows\system32\\notepad.exe "
 
-        # Read './Data/README.txt'
-        self.stamp_print('Opening "' + readme + "'...")
-        readme_file = open(readme, 'r')
-        self.stamp_print('"README.txt" Opened. ' + '"' + readme + '" ')
-        self.stamp_appendTextBox('"' + readme + '" Opened. ')
-        lines = readme_file.readlines()
-        for line in lines:
-            self.wg.log_textbox.insertPlainText(" " + line)
-            print(" " + line, end="")
-            
-        readme_file.close()
+        self.stamp_print('Manual Opened with Notepad. ' + '"' + manual + '"')
 
-        self.stamp_print('End of "Readme.txt"')
-        self.stamp_appendTextBox('End of "README.txt"')
-        self.wg.log_textbox.appendPlainText()
+        self.set_status("Manual Opened.")
+        os.system(notepad + manual)
+        self.set_status("Manual Closed.")
+
+        self.stamp_print('Manual Closed. ')
 
 
+        return
 
-
-
+    def setFocusOnBottom(self):
+        c = self.wg.log_textbox.textCursor()
+        c.movePosition(QTextCursor.atBlockEnd())
+        self.wg.log_textbox.setTextCursor(c)
         return
 
 ### End of MyMainWindow ###
