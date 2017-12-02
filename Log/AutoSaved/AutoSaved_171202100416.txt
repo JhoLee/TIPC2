@@ -1,0 +1,4 @@
+[17/12/02 10:04:12] File Loaded. "E:/Jho/TIPC2/Image/TestImage_171202100113.jpg"
+[17/12/02 10:04:12] Test Image Saved in "E:/Jho/TIPC2/Image/TestImage_171202100412.jpg"
+[17/12/02 10:04:13] Test Start.
+[17/12/02 10:04:16] Most Similar: rolex(35.12%)

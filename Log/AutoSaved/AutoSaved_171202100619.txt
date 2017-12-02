@@ -1,0 +1,4 @@
+[17/12/02 10:06:16] File Loaded. "C:/Users/Jho/Pictures/Nike.png"
+[17/12/02 10:06:16] Test Image Saved in "E:/Jho/TIPC2/TestImage/TestImage_171202100616.jpg"
+[17/12/02 10:06:17] Test Start.
+[17/12/02 10:06:19] Most Similar: nike(99.95%)

@@ -1,0 +1,3 @@
+[17/12/02 10:02:33] File Loaded. "E:/Jho/TIPC2/Image/TestImage_171202095244.jpg"
+[17/12/02 10:02:36] Test Start.
+[17/12/02 10:02:38] Most Similar: rolex(35.27%)
