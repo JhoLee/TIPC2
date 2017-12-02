@@ -427,7 +427,7 @@ class MyMainWindow(QMainWindow):
         background = Image.new("RGB", png.size, (255, 255, 255))
         background.paste(png, mask=png.split()[3])  # 3 is the alpha channel
 
-        image_dir = os.path.abspath('./TestImage')
+        image_dir = os.path.abspath('./TestImage').replace("\\", "/")
 
         self.create_dir(image_dir)
 
@@ -461,7 +461,7 @@ class MyMainWindow(QMainWindow):
     ## Saving TXT File ##
 
     def save_file(self, txt):
-        log_dir = os.path.abspath('./Log')
+        log_dir = os.path.abspath('./Log').replace("\\", "/")
 
         self.stamp_print('log directory: "' + log_dir + "'")
 
@@ -488,7 +488,7 @@ class MyMainWindow(QMainWindow):
     ## Auto Saving Log ##
     def autoSave_file(self, txt):
 
-        log_dir = os.path.abspath('./Log')
+        log_dir = os.path.abspath('./Log').replace("\\", "/")
         self.stamp_print('log directory: "' + log_dir + "'")
 
         # './Logs' 디렉토리 미존재시, 생성
@@ -523,7 +523,7 @@ class MyMainWindow(QMainWindow):
     # Help Button Clicked #
     def help_btn_clicked(self):
         self.stamp_print('Help Button Clicked.')
-        manual = os.path.abspath('./Data/user_manual.txt')
+        manual = os.path.abspath('./Data/user_manual.txt').replace("\\", "/")
         notepad = "c:\windows\system32\\notepad.exe "
 
         self.stamp_print('Manual Opened with Notepad. ' + '"' + manual + '"')
