@@ -385,7 +385,7 @@ class MyMainWindow(QMainWindow):
                 label = result[1]
 
                 # similarity degree(percentage) #
-                percentage = '%.2f' % result[2] + '%%'
+                percentage = '%.2f' % result[2] + '%'
 
                 result_line = ' %s: %s -> %s' % (rank, label, percentage)
 
