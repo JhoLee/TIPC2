@@ -2,8 +2,6 @@
 
 import numpy as np
 import tensorflow as tf
-import os
-import PIL.Image
 
 
 class ImageCheck:
@@ -111,16 +109,6 @@ class ImageCheck:
             return self.result
 
 
-    def convert_png_to_jpeg(self, image_path):
-
-        png = PIL.Image.open(image_path).convert('RGBA')
-        png.load()
-
-        background = PIL.Image.new("RGB", png.size, (255, 255, 255))
-        background.paste(png, mask=png.split()[3])  # 3 is the alpha channel
-
-        background.save('../datas/test.jpg', 'JPEG', quality=100)
-        return '../datas/test.jpg'
 
 
 
@@ -176,7 +164,7 @@ class MyWidget(QWidget):
     ## setupUI ##
     def setupUI(self):
         ## Window ##
-        self.setWindowTitle("TIPC - KNUT")
+        self.setWindowTitle("Trademark Image Plagiarism Checker")
         self.setFixedSize(470, 547)
         ## End of Window ##
 
@@ -267,6 +255,7 @@ class MyMainWindow(QMainWindow):
     file_name = None
     resultFromTest = None
     default_image = "Data/default_image.jpg"
+    icon_image = "Data/icon.png"
 
 
 
@@ -274,7 +263,8 @@ class MyMainWindow(QMainWindow):
         super().__init__()
         self.wg = MyWidget()
         self.setupUI()
-        self.wg.openImage_btn.clicked.connect(self.btn_OpenFileDialogClicked)
+        self.wg.help_btn.clicked.connect(self.help_btn_clicked)
+        self.wg.openImage_btn.clicked.connect(self.OpenFileDialog_btn_Clicked)
         self.wg.startChecking_btn.clicked.connect(self.startTest)
         self.wg.save_btn.clicked.connect(self.save_log)
         self.wg.initialize_btn.clicked.connect(self.initialize)
@@ -283,6 +273,16 @@ class MyMainWindow(QMainWindow):
 
     ## setupUI ##
     def setupUI(self):
+        ## Icon ##
+        app_icon = QtGui.QIcon()
+        app_icon.addFile(self.icon_image, QtCore.QSize(16, 16))
+        app_icon.addFile(self.icon_image, QtCore.QSize(24, 24))
+        app_icon.addFile(self.icon_image, QtCore.QSize(32, 32))
+        app_icon.addFile(self.icon_image, QtCore.QSize(48, 48))
+        app_icon.addFile(self.icon_image, QtCore.QSize(256, 256))
+        self.setWindowIcon(app_icon)
+        ## ##
+
         ## Window Size and Location ##
         self.setGeometry(QtCore.QRect(500, 300, 470, 500))
         self.setFixedSize(470, 500)
@@ -321,7 +321,7 @@ class MyMainWindow(QMainWindow):
 
 
     ## getFileName ##
-    def btn_OpenFileDialogClicked(self):
+    def OpenFileDialog_btn_Clicked(self):
         file_name = QFileDialog.getOpenFileName(self.wg, 'Open Image File', 'Image', "Image files (*.jpg *.png)")[0]
         if file_name == '':
 
@@ -344,6 +344,7 @@ class MyMainWindow(QMainWindow):
 
                 self.wg.imgView.setScaledContents(True)
                 self.set_status("File Loaded")
+
 
 
         return
@@ -386,7 +387,10 @@ class MyMainWindow(QMainWindow):
                 # similarity degree(percentage) #
                 percentage = '%.2f' % result[2] + '%%'
 
-                print(' %s: %s -> %s' % (rank, label, percentage))
+                result_line = ' %s: %s -> %s' % (rank, label, percentage)
+
+                print(result_line)
+                self.wg.log_textbox.appendPlainText(result_line)
             self.stamp_appendTextBox("Most Similar: %s(%.2f%%)" % ( self.resultFromTest[0][1], self.resultFromTest[0][2]))
             self.stamp_print('Printing result ended.')
             # #
@@ -424,7 +428,7 @@ class MyMainWindow(QMainWindow):
         background = Image.new("RGB", png.size, (255, 255, 255))
         background.paste(png, mask=png.split()[3])  # 3 is the alpha channel
 
-        image_dir = (os.getcwd()).replace("\\", '/') + '/TestImage'
+        image_dir = os.path.abspath('./TestImage')
 
         self.create_dir(image_dir)
 
@@ -432,7 +436,7 @@ class MyMainWindow(QMainWindow):
 
         background.save(test_image, 'JPEG', quality=100)
 
-        self.stamp_print('Image Converted. "%s" -> "%s"' %(image_path, test_image))
+        self.stamp_print('Image Converted and Saved. "%s" -> "%s"' %(image_path, test_image))
         self.stamp_appendTextBox('Test Image Saved in "%s"' %(test_image))
         return test_image
 
@@ -457,7 +461,8 @@ class MyMainWindow(QMainWindow):
     ## Saving TXT File ##
 
     def save_file(self, txt):
-        log_dir = ('Log')
+        log_dir = os.path.abspath('./Log')
+
         self.stamp_print('log directory: "' + log_dir + "'")
 
         # './Logs' 디렉토리 미존재시, 생성
@@ -483,7 +488,7 @@ class MyMainWindow(QMainWindow):
     ## Auto Saving Log ##
     def autoSave_file(self, txt):
 
-        log_dir = ('Log')
+        log_dir = os.path.abspath('./Log')
         self.stamp_print('log directory: "' + log_dir + "'")
 
         # './Logs' 디렉토리 미존재시, 생성
@@ -515,6 +520,32 @@ class MyMainWindow(QMainWindow):
             self.stamp_print('Directory is already exist. "' + _dir + '"')
     # #
 
+    # Help Button Clicked #
+    def help_btn_clicked(self):
+        readme = os.path.abspath('./Data/README.txt')
+        self.stamp_print('Help Button Cliked.')
+
+        # Read './Data/README.txt'
+        self.stamp_print('Opening "' + readme + "'...")
+        readme_file = open(readme, 'r')
+        self.stamp_print('"README.txt" Opened. ' + '"' + readme + '" ')
+        self.stamp_appendTextBox('"' + readme + '" Opened. ')
+        lines = readme_file.readlines()
+        for line in lines:
+            self.wg.log_textbox.insertPlainText(" " + line)
+            print(" " + line, end="")
+            
+        readme_file.close()
+
+        self.stamp_print('End of "Readme.txt"')
+        self.stamp_appendTextBox('End of "README.txt"')
+        self.wg.log_textbox.appendPlainText()
+
+
+
+
+
+        return
 
 ### End of MyMainWindow ###
 
@@ -525,11 +556,6 @@ class MyMainWindow(QMainWindow):
 
 
 import sys
-
-def resource_path(relative_path):
-    if hasattr(sys, '_METIPASS'):
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
 
 
 ### main ###
