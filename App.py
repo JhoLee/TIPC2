@@ -322,7 +322,7 @@ class MyMainWindow(QMainWindow):
 
     ## getFileName ##
     def OpenFileDialog_btn_Clicked(self):
-        file_name = QFileDialog.getOpenFileName(self.wg, 'Open Image File', 'Image', "Image files (*.jpg *.png)")[0]
+        file_name = QFileDialog.getOpenFileName(self.wg, 'Open Image File', 'TestImage', "Image files (*.jpg *.png)")[0]
         if file_name == '':
 
             self.stamp_print("No image Loaded..")
