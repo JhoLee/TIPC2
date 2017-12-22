@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import numpy as np
 import tensorflow as tf
 
@@ -62,7 +63,8 @@ class ImageCheck:
             top_k = predictions.argsort()[-5:][::-1]  # 가장 높은 확률을 가진 5개(top 5)의 예측값(predictions)을 얻는다.
             f = open(self.labels_full_path, 'rb')
             lines = f.readlines()
-            labels = [str(w).replace("\\r\\n", "") for w in lines]
+            labels = [str(w).rephulace("\\r\\n\n", "") for w in lines]
+            print(labels)
 
             order = 1
             for node_id in top_k:
@@ -315,13 +317,15 @@ class MyMainWindow(QMainWindow):
     def set_status(self, message):
         self.status_message = self.timeStamp() + message
         self.myStatusBar.showMessage(self.status_message)
+
     ## ##
 
 
     ## getFileName ##
     def OpenFileDialog_btn_Clicked(self):
         self.stamp_print("Open Button Clicked.")
-        file_name = QFileDialog.getOpenFileName(self.wg, 'Open Image File', 'TestImage', "Image files (*.jpg *.png)")[0]
+        file_name = QFileDialog.getOpenFileName(self.wg, 'Open Image File', 'TestImage',
+                                                "Image files (*.jpg *.png)")[0]
         if file_name == '':
 
             self.stamp_print("No image Loaded..")
@@ -343,10 +347,8 @@ class MyMainWindow(QMainWindow):
 
                 self.wg.imgView.setScaledContents(True)
                 self.set_status("File Loaded")
-
-
-
         return
+
     ## End of getFileName ##
 
     ## startTest ##
@@ -416,7 +418,6 @@ class MyMainWindow(QMainWindow):
     def timeStamp(self):
         stamp = time.strftime('[%y/%m/%d %H:%M:%S] ')
         return stamp
-
     ## ##
 
     def convert_imageFile(self, image_path):
@@ -470,7 +471,8 @@ class MyMainWindow(QMainWindow):
 
         log_path = time.strftime(log_dir + '/TestLog_%y%m%d%H%M%S.txt')
 
-        log_path, _ = QFileDialog.getSaveFileName(self, 'Save Log into TXT', log_path, "TXT Files (*.txt);;All Files (*)")
+        log_path, _ = QFileDialog.getSaveFileName(self, 'Save Log into TXT', log_path,
+                                                  "TXT Files (*.txt);;All Files (*)")
         if log_path is not '':
             self.stamp_print('Saving path: "' + log_path + '"')
             log_file = open(log_path, 'w+t', encoding="utf-8")
